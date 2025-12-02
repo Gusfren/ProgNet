@@ -16,19 +16,32 @@ public class ClientGUI extends JFrame {
     
     private static final String SERVER_IP = "127.0.0.1";
     private static final int PORT = 8888;
+    
+    // ===== THEME COLORS (from ServerGUI) =====
+    private static final Color BG = new Color(16, 17, 19);
+    private static final Color CARD = new Color(28, 29, 31);
+    private static final Color TEAL = new Color(0, 235, 200);
+    private static final Color TEXT = new Color(220, 220, 220);
+    private static final Color BRIGHT_RED = new Color(255, 80, 80); // Untuk error
 
     public ClientGUI() {
         setTitle("✨ Scent Tracker - Realtime Alert (Gambar Aktif)");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         
-        Color statusBg = new Color(220, 220, 220); 
+        // Set main background
+        getContentPane().setBackground(BG);
+        
+        // Atur warna ScrollBar secara global agar sesuai dengan ServerGUI
+        UIManager.put("ScrollBar.thumb", new Color(55, 56, 60));
+        UIManager.put("ScrollBar.track", new Color(25, 25, 28));
 
         // --- Status Bar (NORTH) ---
         statusLabel = new JLabel("Status: Disconnected", SwingConstants.CENTER);
         statusLabel.setOpaque(true);
-        statusLabel.setBackground(statusBg);
-        statusLabel.setForeground(Color.BLACK);
+        // Terapkan dark theme
+        statusLabel.setBackground(CARD);
+        statusLabel.setForeground(TEXT);
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
         statusLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         add(statusLabel, BorderLayout.NORTH);
@@ -36,11 +49,14 @@ public class ClientGUI extends JFrame {
         // --- Stock Log Area (CENTER) - Menggunakan JTextPane ---
         stockLogPane = new JTextPane(); 
         stockLogPane.setEditable(false);
-        stockLogPane.setBackground(new Color(245, 245, 245)); 
+        // Terapkan dark theme
+        stockLogPane.setBackground(BG); 
+        stockLogPane.setForeground(TEXT); // Warna teks default untuk antisipasi
         stockLogPane.setFont(new Font("Monospaced", Font.PLAIN, 12));
         
         JScrollPane scrollPane = new JScrollPane(stockLogPane);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder()); 
+        // Berikan border tipis agar mirip dengan card di ServerGUI
+        scrollPane.setBorder(BorderFactory.createLineBorder(CARD.darker(), 1)); 
         add(scrollPane, BorderLayout.CENTER);
 
         pack();
@@ -94,14 +110,22 @@ public class ClientGUI extends JFrame {
             Style defaultStyle = stockLogPane.addStyle("Default", null);
             StyleConstants.setFontFamily(defaultStyle, "Monospaced");
             StyleConstants.setFontSize(defaultStyle, 12);
+            // Pastikan teks default berwarna terang
+            StyleConstants.setForeground(defaultStyle, TEXT); 
+
+            // Style untuk aksen TEAL
+            Style tealStyle = stockLogPane.addStyle("Teal", defaultStyle);
+            StyleConstants.setForeground(tealStyle, TEAL);
+            StyleConstants.setBold(tealStyle, true);
             
             String[] parts = metadata.split(";");
 
             try {
                 // 1. Tambahkan Header Teks
-                doc.insertString(doc.getLength(), "\n" + "=".repeat(45) + "\n", defaultStyle);
-                doc.insertString(doc.getLength(), String.format("🔔 NEW FRAGRANCE DROP! | %tH:%tM:%tS\n", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis()), defaultStyle);
-                doc.insertString(doc.getLength(), "=".repeat(45) + "\n", defaultStyle);
+                doc.insertString(doc.getLength(), "\n" + "=".repeat(65) + "\n", defaultStyle);
+                // Gunakan TEAL style untuk judul alert
+                doc.insertString(doc.getLength(), String.format("🔔 NEW FRAGRANCE DROP! | %tH:%tM:%tS\n", System.currentTimeMillis(), System.currentTimeMillis(), System.currentTimeMillis()), tealStyle);
+                doc.insertString(doc.getLength(), "=".repeat(65) + "\n", defaultStyle);
 
                 // 2. Tambahkan Metadata
                 if (parts.length == 3) {
@@ -147,7 +171,7 @@ public class ClientGUI extends JFrame {
                     doc.insertString(doc.getLength(), "  (Tidak ada gambar yang dikirim)\n", defaultStyle);
                 }
                 
-                doc.insertString(doc.getLength(), "-------------------------------------------\n", defaultStyle);
+                doc.insertString(doc.getLength(), "=".repeat(65), defaultStyle);
                 
             } catch (BadLocationException e) {
                 System.err.println("Error inserting text/image: " + e.getMessage());
@@ -161,7 +185,15 @@ public class ClientGUI extends JFrame {
     private void updateStatus(String text, Color color) {
         SwingUtilities.invokeLater(() -> {
             statusLabel.setText("Status: " + text);
-            statusLabel.setForeground(color);
+            
+            // Sesuaikan warna status dengan dark theme:
+            if (color == Color.RED) {
+                statusLabel.setForeground(BRIGHT_RED); // Gunakan merah terang untuk error
+            } else if (color == Color.BLUE) {
+                statusLabel.setForeground(TEAL); // Gunakan TEAL untuk connected/success
+            } else {
+                statusLabel.setForeground(TEXT);
+            }
         });
     }
 
