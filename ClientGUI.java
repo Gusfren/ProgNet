@@ -25,7 +25,7 @@ public class ClientGUI extends JFrame {
     private static final Color BRIGHT_RED = new Color(255, 80, 80); // Untuk error
 
     public ClientGUI() {
-        setTitle("✨ Scent Tracker - Realtime Alert (Gambar Aktif)");
+        setTitle("✨ Fragrance Flash");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         
@@ -161,7 +161,7 @@ stockLogPane.addMouseListener(new java.awt.event.MouseAdapter() {
 
                 // 2. Tambahkan Metadata
                 if (parts.length == 3) {
-                    doc.insertString(doc.getLength(), "  🏷️ Name: " + parts[0] + "\n", defaultStyle);
+                    doc.insertString(doc.getLength(), "  ⛫💨 Name: " + parts[0] + "\n", defaultStyle);
                     doc.insertString(doc.getLength(), "  💲 Price: " + parts[1] + "\n", defaultStyle);
                     doc.insertString(doc.getLength(), "  🔗 Link: " + parts[2] + "\n", defaultStyle);
                 } else {
@@ -187,7 +187,7 @@ stockLogPane.addMouseListener(new java.awt.event.MouseAdapter() {
                             Image scaledImage = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
                             imageIcon.setImage(scaledImage);
                             
-                            doc.insertString(doc.getLength(), "  🖼️ Parfum Image:\n", defaultStyle);
+                            doc.insertString(doc.getLength(), "  Parfum Image:\n", defaultStyle);
                             
                             Style iconStyle = stockLogPane.addStyle("IconStyle", defaultStyle);
                             StyleConstants.setIcon(iconStyle, imageIcon);

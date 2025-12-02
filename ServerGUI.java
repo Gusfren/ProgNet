@@ -11,7 +11,7 @@ public class ServerGUI extends JFrame {
     public ServerGUI(ParfumBroadcasterServer server) {
         this.server = server;
 
-        setTitle("AromaLink — Admin Broadcast Console");
+        setTitle("Fragrance Flash — Admin Broadcast Console");
         setSize(430, 650);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,7 +39,7 @@ public class ServerGUI extends JFrame {
         icon.setBounds(15, 12, 30, 30);
         icon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 23));
 
-        JLabel title = new JLabel("AROMALINK — ADMIN BROADCAST CONSOLE");
+        JLabel title = new JLabel("Fragrance Flash — ADMIN BROADCAST CONSOLE");
         title.setBounds(50, 17, 330, 20);
         title.setForeground(text);
         title.setFont(new Font("Inter", Font.BOLD, 13));
@@ -85,12 +85,12 @@ public class ServerGUI extends JFrame {
         formTitle.setBounds(15, 12, 260, 20);
         form.add(formTitle);
 
-        nameField = createInput(form, "🏷️  Parfum Name:", 45);
+        nameField = createInput(form, "⛫💨  Parfum Name:", 45);
         stockField = createInput(form, "💲  Price :", 95);
         linkField = createInput(form, "🔗  Buy Link:", 145);
 
         // Image input
-        JLabel imgLabel = new JLabel("🖼️  Image File:");
+        JLabel imgLabel = new JLabel("Image File:");
         imgLabel.setForeground(text);
         imgLabel.setFont(new Font("Inter", Font.PLAIN, 12));
         imgLabel.setBounds(15, 190, 200, 20);
