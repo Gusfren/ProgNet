@@ -53,14 +53,46 @@ public class ClientGUI extends JFrame {
         stockLogPane.setBackground(BG); 
         stockLogPane.setForeground(TEXT); // Warna teks default untuk antisipasi
         stockLogPane.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        
+        // === Membuat LINK bisa di-klik ===
+stockLogPane.addMouseListener(new java.awt.event.MouseAdapter() {
+    @Override
+    public void mouseClicked(java.awt.event.MouseEvent e) {
+        int pos = stockLogPane.viewToModel2D(e.getPoint());
+        try {
+            String text = stockLogPane.getDocument().getText(0, stockLogPane.getDocument().getLength());
+
+            // Cari URL pola http atau https
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("(https?://\\S+)");
+            java.util.regex.Matcher matcher = pattern.matcher(text);
+
+            while (matcher.find()) {
+                int start = matcher.start();
+                int end = matcher.end();
+
+                if (pos >= start && pos <= end) {
+                    String url = matcher.group();
+                    Desktop.getDesktop().browse(new java.net.URI(url));
+                    break;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+});
+
         JScrollPane scrollPane = new JScrollPane(stockLogPane);
         // Berikan border tipis agar mirip dengan card di ServerGUI
         scrollPane.setBorder(BorderFactory.createLineBorder(CARD.darker(), 1)); 
         add(scrollPane, BorderLayout.CENTER);
 
+        
         pack();
+        setSize(510, 900);     // ukuran default
+        setResizable(false);   // kunci ukuran
         setLocationRelativeTo(null);
+        setVisible(true);
+
         setVisible(true);
     }
     
@@ -129,9 +161,9 @@ public class ClientGUI extends JFrame {
 
                 // 2. Tambahkan Metadata
                 if (parts.length == 3) {
-                    doc.insertString(doc.getLength(), "  🧴 NAMA: " + parts[0] + "\n", defaultStyle);
-                    doc.insertString(doc.getLength(), "  🏷️ HARGA: " + parts[1] + "\n", defaultStyle);
-                    doc.insertString(doc.getLength(), "  🛒 LINK: " + parts[2] + "\n", defaultStyle);
+                    doc.insertString(doc.getLength(), "  🏷️ Name: " + parts[0] + "\n", defaultStyle);
+                    doc.insertString(doc.getLength(), "  💲 Price: " + parts[1] + "\n", defaultStyle);
+                    doc.insertString(doc.getLength(), "  🔗 Link: " + parts[2] + "\n", defaultStyle);
                 } else {
                     doc.insertString(doc.getLength(), "  [Pesan Admin]: " + metadata + "\n", defaultStyle);
                 }

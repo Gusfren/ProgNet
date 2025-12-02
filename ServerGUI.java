@@ -35,7 +35,7 @@ public class ServerGUI extends JFrame {
         header.setBounds(20, 20, 380, 55);
         header.setLayout(null);
 
-        JLabel icon = new JLabel("🧴");
+        JLabel icon = new JLabel("✨");
         icon.setBounds(15, 12, 30, 30);
         icon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 23));
 
@@ -85,8 +85,8 @@ public class ServerGUI extends JFrame {
         formTitle.setBounds(15, 12, 260, 20);
         form.add(formTitle);
 
-        nameField = createInput(form, "🧪  Parfum Name:", 45);
-        stockField = createInput(form, "🏷️  Price / Stock:", 95);
+        nameField = createInput(form, "🏷️  Parfum Name:", 45);
+        stockField = createInput(form, "💲  Price :", 95);
         linkField = createInput(form, "🔗  Buy Link:", 145);
 
         // Image input
